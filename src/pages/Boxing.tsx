@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
-import { Activity, Pause, Play, Settings2, Smartphone } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { Activity, Pause, Play, Save, Settings2, Smartphone } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -30,6 +32,8 @@ const Boxing = () => {
   const [config, setConfig] = useState<PunchConfig>(DEFAULT_CONFIG);
   const [peakIntensity, setPeakIntensity] = useState(0);
   const [recentPunches, setRecentPunches] = useState<number[]>([]); // timestamps of recent punches
+  const [saving, setSaving] = useState(false);
+  const { toast } = useToast();
 
   // Refs for punch detection
   const lastPunchTimeRef = useRef<number>(0);
@@ -170,6 +174,41 @@ const Boxing = () => {
     lastPunchTimeRef.current = 0;
   };
 
+  const saveSession = async () => {
+    if (duration === 0) return;
+    setSaving(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("You must be logged in to save workouts");
+
+      const { error } = await supabase.from("workouts").insert({
+        user_id: user.id,
+        workout_type: "boxing",
+        duration,
+        calories: Math.round(calories),
+        punches,
+        intensity: Math.round(avgIntensity),
+        notes: `${punches} punches, peak intensity ${peakIntensity.toFixed(0)}%`,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Workout Saved!",
+        description: `Boxing session saved: ${punches} punches in ${formatTime(duration)}`,
+      });
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Failed to save workout";
+      toast({
+        title: "Error",
+        description: message,
+        variant: "destructive",
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -184,13 +223,7 @@ const Boxing = () => {
     <div className="min-h-screen animated-gradient">
       <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-4xl">
         <header className="flex items-center justify-between mb-4 sm:mb-8 gap-2">
-          <Link to="/">
-            <Button variant="default" size="sm" className="bg-card hover:bg-card/80 text-foreground border-2 border-border hover:border-destructive transition-all duration-300 shadow-sm h-10 px-3 sm:px-4">
-              <span className="hidden sm:inline">Back to Dashboard</span>
-              <span className="sm:hidden">Back</span>
-            </Button>
-          </Link>
-          <h1 className="text-lg sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-destructive to-primary bg-clip-text text-transparent flex-1 text-center">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-destructive to-primary bg-clip-text text-transparent flex-1 text-center">
             <span className="hidden sm:inline">Boxing Tracker</span>
             <span className="sm:hidden">Boxing</span>
           </h1>
@@ -344,13 +377,23 @@ const Boxing = () => {
                 )}
               </Button>
               {!isTracking && duration > 0 && (
-                <Button
-                  onClick={resetSession}
-                  variant="outline"
-                  className="h-14 sm:h-16 px-4"
-                >
-                  Reset
-                </Button>
+                <>
+                  <Button
+                    onClick={saveSession}
+                    variant="outline"
+                    className="h-14 sm:h-16 px-4 hover:bg-primary hover:text-white transition-all duration-300 active:scale-95"
+                    disabled={saving}
+                  >
+                    <Save className="w-5 h-5" />
+                  </Button>
+                  <Button
+                    onClick={resetSession}
+                    variant="outline"
+                    className="h-14 sm:h-16 px-4"
+                  >
+                    Reset
+                  </Button>
+                </>
               )}
             </div>
           </Card>

@@ -11,6 +11,7 @@ import
     DialogTitle,
   } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { supabase } from "@/integrations/supabase/client";
 import { CheckCircle2, Flame, Info, Target, Trophy, Zap } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -968,24 +969,14 @@ const Gym = () => {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen animated-gradient flex items-center justify-center">
-        <div className="text-2xl text-muted-foreground">Loading challenge...</div>
-      </div>
-    );
+    return <LoadingSpinner message="Loading challenge..." />;
   }
 
   return (
     <div className="min-h-screen animated-gradient">
       <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-6xl">
         <header className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-8">
-          <Link to="/" className="flex-shrink-0">
-            <Button variant="default" size="sm" className="w-full sm:w-auto bg-card hover:bg-card/80 text-foreground border-2 border-border hover:border-primary transition-all duration-300 shadow-sm h-10 px-3 sm:px-4">
-              <span className="hidden sm:inline">Back to Dashboard</span>
-              <span className="sm:hidden">Back</span>
-            </Button>
-          </Link>
-          <h1 className="text-lg sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-success to-primary bg-clip-text text-transparent text-center flex-1">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-success to-primary bg-clip-text text-transparent text-center flex-1">
             <span className="hidden sm:inline">{showCustomWorkout ? "Custom Workout" : "90-Day Challenge"}</span>
             <span className="sm:hidden">{showCustomWorkout ? "Custom" : "90-Day"}</span>
           </h1>

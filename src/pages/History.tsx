@@ -1,8 +1,8 @@
-import { NavLink } from "@/components/NavLink";
 import { Badge } from "@/components/ui/badge";
 import { Calendar } from "@/components/ui/calendar";
 import { Card } from "@/components/ui/card";
 import { useWorkoutHistory } from "@/hooks/useWorkoutHistory";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { format } from "date-fns";
 import { Bike, Box, Calendar as CalendarIcon, Clock, Dumbbell, TrendingUp, Users } from "lucide-react";
 import { useState } from "react";
@@ -47,30 +47,25 @@ const History = () => {
   );
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-2xl text-muted-foreground">Loading history...</div>
-      </div>
-    );
+    return <LoadingSpinner message="Loading history..." />;
   }
 
   return (
     <div className="min-h-screen animated-gradient">
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
-        <div className="flex items-center gap-4 mb-8">
-          <NavLink to="/" />
-          <h1 className="text-4xl font-bold float">
+      <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-7xl">
+        <header className="mb-4 sm:mb-8">
+          <h1 className="text-2xl sm:text-4xl font-bold">
             <span className="bg-gradient-to-r from-primary via-energy-glow to-primary bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(255,87,34,0.3)]">
               Workout History
             </span>
           </h1>
-        </div>
+        </header>
 
-        <div className="grid lg:grid-cols-2 gap-8">
+        <div className="grid lg:grid-cols-2 gap-4 sm:gap-8">
           {/* Calendar */}
-          <Card className="p-6 bg-card/90 backdrop-blur-sm border-border/50 shadow-xl card-lift">
-            <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-              <CalendarIcon className="w-6 h-6 text-primary drop-shadow-[0_0_8px_rgba(255,87,34,0.4)]" />
+          <Card className="p-4 sm:p-6 bg-card/90 backdrop-blur-sm border-border/50 shadow-xl card-lift">
+            <h2 className="text-lg sm:text-2xl font-bold mb-4 sm:mb-6 flex items-center gap-2">
+              <CalendarIcon className="w-5 h-5 sm:w-6 sm:h-6 text-primary drop-shadow-[0_0_8px_rgba(255,87,34,0.4)]" />
               Calendar
             </h2>
             <Calendar
@@ -95,8 +90,8 @@ const History = () => {
           </Card>
 
           {/* Workout Details */}
-          <Card className="p-6 bg-card/90 backdrop-blur-sm border-border/50 shadow-xl card-lift">
-            <h2 className="text-2xl font-bold mb-6">
+          <Card className="p-4 sm:p-6 bg-card/90 backdrop-blur-sm border-border/50 shadow-xl card-lift">
+            <h2 className="text-lg sm:text-2xl font-bold mb-4 sm:mb-6">
               {selectedDate ? format(selectedDate, "MMMM d, yyyy") : "Select a date"}
             </h2>
 

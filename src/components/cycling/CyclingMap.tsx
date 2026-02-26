@@ -82,13 +82,14 @@ export const CyclingMap = ({
 
     mapRef.current = map;
 
-    // Add tile layer
+    // Add dark-friendly tile layer (CartoDB Dark Matter for dark mode)
     const tileLayer = L.tileLayer(
-      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
       {
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
+        maxZoom: 20,
         minZoom: 3,
+        subdomains: 'abcd',
         className: 'map-tiles',
       }
     );
@@ -405,12 +406,7 @@ export const CyclingMap = ({
         }
 
         .map-tiles {
-          filter: brightness(0.95) contrast(1.05);
           transition: filter 0.3s ease-in-out;
-        }
-
-        .dark .map-tiles {
-          filter: brightness(0.7) contrast(1.1) saturate(0.8);
         }
       `}</style>
     </div>

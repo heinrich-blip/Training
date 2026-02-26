@@ -1,7 +1,7 @@
-import { NavLink } from "@/components/NavLink";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { useAchievements } from "@/hooks/useAchievements";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { format } from "date-fns";
 import { Lock, Trophy } from "lucide-react";
 
@@ -9,11 +9,7 @@ const Achievements = () => {
   const { achievements, loading, isUnlocked, userAchievements } = useAchievements();
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-2xl text-muted-foreground">Loading achievements...</div>
-      </div>
-    );
+    return <LoadingSpinner message="Loading achievements..." />;
   }
 
   const unlockedCount = userAchievements.length;
@@ -22,34 +18,33 @@ const Achievements = () => {
 
   return (
     <div className="min-h-screen animated-gradient">
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
-        <div className="flex items-center gap-4 mb-8">
-          <NavLink to="/" />
-          <h1 className="text-4xl font-bold float">
+      <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-6xl">
+        <header className="mb-4 sm:mb-8">
+          <h1 className="text-2xl sm:text-4xl font-bold">
             <span className="bg-gradient-to-r from-primary via-energy-glow to-primary bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(255,87,34,0.3)]">
               Achievements
             </span>
           </h1>
-        </div>
+        </header>
 
         {/* Progress Overview */}
-        <Card className="p-6 mb-8 bg-gradient-to-br from-primary/10 to-card/90 backdrop-blur-sm border-primary/20 shadow-xl glow-effect-sm">
+        <Card className="p-4 sm:p-6 mb-6 sm:mb-8 bg-gradient-to-br from-primary/10 to-card/90 backdrop-blur-sm border-primary/20 shadow-xl glow-effect-sm">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-bold mb-2">Your Progress</h2>
-              <p className="text-muted-foreground">
+              <h2 className="text-lg sm:text-2xl font-bold mb-1 sm:mb-2">Your Progress</h2>
+              <p className="text-xs sm:text-base text-muted-foreground">
                 {unlockedCount} of {totalCount} achievements unlocked
               </p>
             </div>
             <div className="text-right">
-              <div className="text-5xl font-bold text-primary drop-shadow-[0_0_20px_rgba(255,87,34,0.5)] pulse-slow">{completionPercentage}%</div>
-              <p className="text-sm text-muted-foreground">Complete</p>
+              <div className="text-3xl sm:text-5xl font-bold text-primary drop-shadow-[0_0_20px_rgba(255,87,34,0.5)] pulse-slow">{completionPercentage}%</div>
+              <p className="text-xs sm:text-sm text-muted-foreground">Complete</p>
             </div>
           </div>
         </Card>
 
         {/* Achievements Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
           {achievements.map((achievement) => {
             const unlocked = isUnlocked(achievement.id);
             const userAchievement = userAchievements.find(
@@ -59,15 +54,15 @@ const Achievements = () => {
             return (
                 <Card
                   key={achievement.id}
-                  className={`p-6 transition-all duration-500 card-lift ${
+                  className={`p-4 sm:p-6 transition-all duration-500 card-lift ${
                     unlocked
                       ? "bg-gradient-to-br from-primary/10 to-card/90 backdrop-blur-sm border-primary/30 shadow-[0_0_20px_rgba(255,87,34,0.2)] hover:shadow-[0_0_30px_rgba(255,87,34,0.3)]"
                       : "bg-card/50 backdrop-blur-sm border-border/50 opacity-60 hover:opacity-80"
                   }`}
                 >
-                  <div className="text-center space-y-4">
+                  <div className="text-center space-y-2 sm:space-y-4">
                     <div
-                      className={`w-20 h-20 mx-auto rounded-full flex items-center justify-center text-4xl transition-all duration-300 ${
+                      className={`w-14 h-14 sm:w-20 sm:h-20 mx-auto rounded-full flex items-center justify-center text-2xl sm:text-4xl transition-all duration-300 ${
                         unlocked
                           ? "bg-primary/20 border-2 border-primary scale-110 animate-[fade-in_0.5s_ease-out]"
                           : "bg-muted/20 border-2 border-border"
@@ -75,8 +70,8 @@ const Achievements = () => {
                     >
                       {unlocked ? achievement.icon : <Lock className="w-8 h-8" />}
                     </div>                  <div>
-                    <h3 className="text-xl font-bold mb-2">{achievement.name}</h3>
-                    <p className="text-sm text-muted-foreground mb-3">
+                    <h3 className="text-sm sm:text-xl font-bold mb-1 sm:mb-2">{achievement.name}</h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground mb-2 sm:mb-3 line-clamp-2">
                       {achievement.description}
                     </p>
 

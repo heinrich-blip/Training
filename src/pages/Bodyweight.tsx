@@ -37,18 +37,11 @@ const Bodyweight = () => {
   return (
     <div className="min-h-screen animated-gradient">
       <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-4xl">
-        <header className="flex items-center justify-between mb-4 sm:mb-8 gap-2">
-          <Link to="/">
-            <Button variant="default" size="sm" className="bg-card hover:bg-card/80 text-foreground border-2 border-border hover:border-success transition-all duration-300 shadow-sm h-10 px-3 sm:px-4">
-              <span className="hidden sm:inline">Back to Dashboard</span>
-              <span className="sm:hidden">Back</span>
-            </Button>
-          </Link>
-          <h1 className="text-lg sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-success to-primary bg-clip-text text-transparent flex-1 text-center">
+        <header className="flex items-center justify-center mb-4 sm:mb-8">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-success to-primary bg-clip-text text-transparent">
             <span className="hidden sm:inline">Bodyweight Workout</span>
             <span className="sm:hidden">Bodyweight</span>
           </h1>
-          <div className="w-10 sm:w-40" />
         </header>
 
         <Card className="p-4 sm:p-6 mb-4 sm:mb-6 bg-gradient-to-br from-card/90 to-card/50 backdrop-blur-sm border-2 border-border/50 glow-effect-sm">

@@ -1,4 +1,3 @@
-import { NavLink } from "@/components/NavLink";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -8,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useGoals } from "@/hooks/useGoals";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { format } from "date-fns";
 import { CheckCircle2, Plus, Target, Trash2 } from "lucide-react";
 import { useState } from "react";
@@ -41,25 +41,18 @@ const Goals = () => {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-2xl text-muted-foreground">Loading goals...</div>
-      </div>
-    );
+    return <LoadingSpinner message="Loading goals..." />;
   }
 
   return (
     <div className="min-h-screen animated-gradient">
-      <div className="container mx-auto px-4 py-8 max-w-5xl">
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-4">
-            <NavLink to="/" />
-            <h1 className="text-4xl font-bold float">
-              <span className="bg-gradient-to-r from-primary via-energy-glow to-primary bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(255,87,34,0.3)]">
-                Goals
-              </span>
-            </h1>
-          </div>
+      <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-5xl">
+        <div className="flex items-center justify-between mb-4 sm:mb-8">
+          <h1 className="text-2xl sm:text-4xl font-bold">
+            <span className="bg-gradient-to-r from-primary via-energy-glow to-primary bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(255,87,34,0.3)]">
+              Goals
+            </span>
+          </h1>
 
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
